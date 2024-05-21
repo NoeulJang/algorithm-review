@@ -1,0 +1,50 @@
+public class chap6_1_isPalindrome {
+
+    //주어진 문자열이 팰린드롬인지 확인하라. 대소문자를 구분하지 않으며, 영숫자만을 대상으로 한다.
+    //팰린드롬 : 앞뒤가 똑같은 단어나 문장으로 뒤집어도 같은 말이 되는 단어 또는 문장
+    public static void main(String[] args){
+        //System.out.println(isPalindrome("여보 안경 안 보여"));
+        System.out.println(isPalindrome1("여보 안경 안 보여"));
+    }
+    
+    //해결 1. 원시 자료형을 직접 비교하므로 속도가 빠름
+    public static boolean isPalindrome1(String s) {
+        int sIdx = 0;
+        int eIdx = s.length()-1;
+
+        //투 포인터가 서로 만나기 전까지 반복
+        while(sIdx < eIdx){
+            //앞 포인터가 문자나 숫자가 아닐경우 비교를 생략
+            if(!Character.isLetterOrDigit(s.charAt(sIdx))){
+                sIdx ++;
+            //뒷 포인터가 문자나 숫자가 아닐경우 비교를 생략
+            } else if(!Character.isLetterOrDigit(s.charAt(eIdx))){
+                eIdx --;
+            } else {
+                //비교 시 두 포인터가 같지 않다면 팰린드롬이 아니므로 false를 리턴, 소문자로 치환한 뒤 비교한다.
+                if(Character.toLowerCase(s.charAt(sIdx)) != Character.toLowerCase(s.charAt(eIdx))){
+                    return false;
+                }
+                //맞으면 포인터를 서로 당겨 다시 비교
+                sIdx ++;
+                eIdx --;
+            }
+        }
+        
+        return true;
+    }
+
+    //해결 2. 정규식 사용, 클래스를 비교하므로 속도가 느림
+    public static boolean isPalindrome2(String s) {
+        //영문자와 숫자가 아닌것은 삭제한 뒤, 소문자로 치환한다.
+        String s_filtered = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+
+        //StringBuilder().reverse() 를 사용하여 문자열을 뒤집음
+        //참고로 StringBuilder는 쓰레드 안전하지 않다.
+        String s_reversed = new StringBuilder(s_filtered).reverse().toString();
+
+        //equals로 비교
+        return s_filtered.equals(s_reversed);
+    }
+
+} 
