@@ -1,5 +1,6 @@
 public class chap6_2_reverseString {
 
+    //문자열을 뒤집는 함수를 작성하라. 입력값은 문자 배열이며, 리턴 없이 입력 배열 내부를 직접 조작하라.(해당 정답은 편의상 배열을 리턴을 받도록 함)
     public static void main(String[] args){
         //char는 ''안에 값 선언
         char[] strArr = {'b', 'l', 'i', 'n', 'n', 'g', 'g'};
