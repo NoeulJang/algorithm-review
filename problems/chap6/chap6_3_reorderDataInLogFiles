@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class chap6_3_reorderDataInLogFiles {
+
+    //로그를 재정렬하라. 기준은 다음과 같다.
+    //1. 로그의 가장 앞부분은 식별자로서, 순서에 영향을 끼치지 않는다.
+    //2. 문자로 구성된 로그가 숫자 로그보다 앞에 오며, 문자 로그는 사전순으로 한다.
+    //3. 문자가 동일할 경우에는 식별자순으로 한다.
+    //4. 숫자 로그는 입력 순서대로 한다.
+    //설명에는 안나와있지만 문자로그에는 문자만 들어있고, 숫자로그에는 숫자만 들어있다(즉, 문자로그와 숫자 로그가 섞인 건 없다.)
+
+    public static void main(String[] args){
+        //char는 ''안에 값 선언
+        String[] strArr = {"id1 8 1 5 1", "id2 art can", "id3 3 6", "id4 own kit dig", "id5 art zero"};
+        for(String str : reorderDataInLogFiles(strArr)){
+            System.out.println("str :: " + str);
+        }
+    }
+    
+    public static String[] reorderDataInLogFiles(String[] logs) {
+
+        List<String> letterList = new ArrayList<>();
+        List<String> digitList = new ArrayList<>();
+
+        //문자 로그와 숫자로그를 따로 담아 정렬한다.
+        for(String log : logs){
+            //숫자면 숫자로그 리스트에
+            if(Character.isDigit(log.split(" ")[1].charAt(0))){
+                digitList.add(log);
+            }else{
+            //문자면 문자로그 리스트에
+                letterList.add(log);
+            }
+        }
+
+        letterList.sort((s1, s2) -> {
+
+            String[] s1x = s1.split(" ", 2);
+            String[] s2x = s2.split(" ", 2);
+
+            //s1x를 비교하는 문자 순서가 같으면 0, 순서가 앞이면 1보다 큰, 순서가 뒤면 음수가 나온다.
+            int compared = s1x[1].compareTo(s2x[1]);
+
+            //문자가 동일하면 식별자를 비교한다.
+            if(compared == 0){
+                return s1x[0].compareTo(s2x[0]);
+            } else {
+                return compared;
+            }
+
+        });
+
+        //문자 리스트 뒤로 숫자리스트를 이어 추가한다. 숫자로그는 입력 순서대로이므로 따로 정렬하지 않는다.
+        letterList.addAll(digitList);
+
+        return letterList.toArray(new String[0]);
+    }
+
+} 
