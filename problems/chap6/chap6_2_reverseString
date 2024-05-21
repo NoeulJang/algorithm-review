@@ -1,0 +1,26 @@
+public class chap6_2_reverseString {
+
+    public static void main(String[] args){
+        //char는 ''안에 값 선언
+        char[] strArr = {'b', 'l', 'i', 'n', 'n', 'g', 'g'};
+        System.out.println(reverseString(strArr));
+    }
+    
+    public static char[] reverseString(char[] s) {
+
+        int sIdx = 0;
+        int eIdx = s.length -1; 
+        
+        //투 포인터가 서로 만나기 전까지 반복
+        while(sIdx < eIdx){
+            char tempStr = s[eIdx];
+            s[eIdx] = s[sIdx];
+            s[sIdx] = tempStr;
+            sIdx++;
+            eIdx--;
+        }
+
+        return s;
+    }
+
+} 
