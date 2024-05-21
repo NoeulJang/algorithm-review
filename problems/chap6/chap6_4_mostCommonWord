@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class chap6_4_mostCommonWord {
+
+    //금지된 단어를 제외하고 가장 흔하게 등장하는 단어를 출력하라. 대소문자를 구분하지 않으며, 구두점(마침표, 쉼표 등) 또한 무시한다.
+
+    public static void main(String[] args){
+
+        String p = "Ross hit a ball, the hit BALL flew far away after it was hit.";
+        String[] banned = {"hit"};
+
+        System.out.println(mostCommonWord(p, banned));
+        
+    }
+    
+    public static String mostCommonWord(String p, String[] banned) {
+
+        //banned를 비교 메소드가 존재하는 Set으로 변경
+        Set<String> ban = new HashSet<>(Arrays.asList(banned));
+
+        //가장 많이 등장한(value), 단어(key) 를 출력해야 하므로 결과 도출용 map 생성
+        Map<String, Integer> countMap = new HashMap<>();
+
+        // \W 문자가 아닌 + 연속적인 값은 삭제, 소문자로 변환한 뒤 공백문자를 기준으로 배열로 만듦
+        String[] words = p.replaceAll("\\W+", " ").toLowerCase().split(" ");
+
+        for(String word : words){
+            //금지 문자가 아니라면
+            if(!ban.contains(word)){
+                //맵에다가 넣는데, map.getOrDefault로 이미 map 안에 같은 key가 있으면 그 value를 아니라면 defaultValue를 가져오며 그에 +1를 카운팅하여 넣는다.
+                countMap.put(word, countMap.getOrDefault(word, 0)+1);
+            }
+        }
+
+        System.out.println(countMap.entrySet());
+        
+        //가장 흔하게 등장하는 키를 추출한다.
+        return Collections.max(countMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+
+    }
+
+} 
