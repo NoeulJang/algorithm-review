@@ -11,7 +11,6 @@ public class chap6_3_reorderDataInLogFiles {
     //설명에는 안나와있지만 문자로그에는 문자만 들어있고, 숫자로그에는 숫자만 들어있다(즉, 문자로그와 숫자 로그가 섞인 건 없다.)
 
     public static void main(String[] args){
-        //char는 ''안에 값 선언
         String[] strArr = {"id1 8 1 5 1", "id2 art can", "id3 3 6", "id4 own kit dig", "id5 art zero"};
         for(String str : reorderDataInLogFiles(strArr)){
             System.out.println("str :: " + str);
