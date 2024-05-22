@@ -1,0 +1,47 @@
+public class chap6_6_longestPalindromicSubstring {
+
+    //가장 긴 팰린드롬 부분 문자열을출력하라.
+    static int left, maxLen;
+
+    public static void main(String[] args){
+
+        String str = "dcbabcdd";
+
+        System.out.println(longestPalindrome(str));
+        
+    }
+    
+    public static void longestPalindromicSubstring(String s, int j, int k) {
+
+        //팰린드롬을 발견하면 투포인터를 양방향으로 확장시킨다.
+        while (j >= 0 && k < s.length() && s.charAt(j) == s.charAt(k)) {
+            j--;
+            k++;
+        }
+
+        //문자열을 출력해야 하므로 left에 초기 인덱스(위에서 -1상태로 점검한 뒤 아니면 빠져나오므로 다시 되돌리기 위해 +1), maxLen에 최대 길이를 선언한다.
+        //양쪽이 증가된 상태이므로 길이 구하는 공식에 -1만 하면 maxLen 길이가 나옴
+        if(maxLen < k - j - 1){
+            left = j + 1;
+            maxLen = k - j - 1;
+        }
+    }
+
+    public static String longestPalindrome(String s) {
+
+        int len = s.length();
+
+        //길이가 1일 경우 예외 처리
+        if(len <2) return s;
+
+        //슬라이딩 윈도우로 투포인터 조사
+        for(int i = 0; i < len - 1; i++){
+            //단 홀수와 짝수까지 계산하여 2칸,3칸짜리 포인터 동시 실행
+            longestPalindromicSubstring(s, i, i + 1);   //2칸짜리 포인터
+            longestPalindromicSubstring(s, i, i + 2);   //3칸짜리 포인터
+        }
+
+        return s.substring(left, left + maxLen);
+    }
+
+} 
