@@ -1,0 +1,41 @@
+package chap7;
+
+public class chap7_6_bestTimeToBuyAndSellStock {
+
+    //한번의 거래로 낼 수 있는 최대 이익을 산출하라.
+    //1일때 사서 6에 팔면 최대 이익 5
+
+    public static void main(String[] args){
+        
+        int[] nums = {8,1,5,3,6,4};
+
+        System.out.println(bestTimeToBuyAndSellStock(nums));
+        
+    }
+    
+    //첫번째값은 저점으로 선택한 뒤 순회하여 min max를 계산
+    public static int bestTimeToBuyAndSellStock(int[] nums) {
+        
+        int maxProfit = 0, maxPrice = 0, minPrice = nums[0];
+/*
+        for(int i = 1 ; i < nums.length; i++){
+
+            minPrice = Math.min(minPrice, nums[i]); 
+
+            maxPrice = Math.max(maxPrice, nums[i]);
+        }
+
+        return maxPrice - minPrice;
+*/
+        for(int price : nums){
+
+            minPrice = Math.min(minPrice, price);
+
+            //현재 배열의 이익을 계산하여 최대 이익보다 크면 정답변수에 입력
+            maxProfit = Math.max(maxProfit, price - minPrice);
+        }
+
+        return maxProfit;
+    }
+
+} 
