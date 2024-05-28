@@ -3,6 +3,7 @@ package chap7;
 public class chap7_5_productOfArrayExceptSelf {
 
     //배열을 입력받아 output[i]가 자신을 제외한 나머지 모든 엘리먼트의 곱셈 결과가 되도록 출력하라.
+    //단, 나눗셈을 하지 않고 O(n)에 풀이하라.(미리 전체곱을 구해놓고 자신을 나누어선 안됨)
 
     public static void main(String[] args){
         
@@ -14,7 +15,7 @@ public class chap7_5_productOfArrayExceptSelf {
         
     }
     
-    //왼쪽 곱셈 결과에 오른쪽 값을 차례대로 곱
+    //왼쪽 곱셈 결과에 오른쪽 값을 차례대로 곱 -시간복잡도O(1)
     public static int[] arrayPartition(int[] nums) {
         int[] result = new int[nums.length];
 
