@@ -1,0 +1,85 @@
+package chap8;
+
+import java.util.*;
+
+public class chap8_1_palindromeLinkedList {
+
+
+//Definition for singly-linked list.
+    public static class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ }
+
+
+    //연결 리스트가 팰린드롬 구조인지 판별하라.
+    public static void main(String[] args){
+        
+        ListNode listNode = new ListNode(1);
+        listNode.next = new ListNode(2);
+        listNode.next.next = new ListNode(3);
+        listNode.next.next.next = new ListNode(2);
+        listNode.next.next.next.next = new ListNode(1);
+        
+        System.out.println(palindromeLinkedList1(listNode));
+
+        System.out.println(palindromeLinkedList2(listNode));
+
+    }
+    
+    //해결 1. 데크를 이용한 풀이
+    public static boolean palindromeLinkedList1(ListNode head) {
+        Deque<Integer> deque = new LinkedList<>();
+
+        ListNode node = head;
+
+        //데크에 노드를 입력
+        while (node != null){
+            deque.add(node.val);
+            node = node.next;
+        }
+
+        //데크가 비거나 한개가 남을 때 까지(양쪽으로 비교해오므로 중앙 한개가 남을때까지 반복했다면 팰린드롬이다.)
+        while (deque.isEmpty() && deque.size() > 1) {
+            //처음과 끝을 꺼내면서 비교
+            if (deque.pollFirst() != deque.pollLast()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    //해결 2. 러너를 이용한 풀이(공부중)
+    public static boolean palindromeLinkedList2(ListNode head) {
+
+        ListNode fast = head, slow = head;
+
+        while (fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        if(fast != null) slow = slow.next;
+        
+        ListNode rev = null;
+
+        while(slow != null){
+            ListNode next = slow.next;
+            slow.next = rev;
+            rev = slow;
+            slow = next;
+        }
+
+        while (rev != null) {
+            if(rev.val != head.val) return false;
+            rev = rev.next;
+            head = head.next;
+        }
+
+        return true;
+    }
+} 
