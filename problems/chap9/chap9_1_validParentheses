@@ -1,0 +1,52 @@
+package chap9;
+
+import java.util.*;
+
+public class chap9_1_validParentheses {
+
+    //대중소 세 종류 괄호로 된 입력값이 유효한지 판별하라.
+    public static void main(String[] args){
+        
+        String s = "[]{}()";
+        
+        System.out.println(validParentheses(s));
+
+    }
+    
+    //해결 1. 데크를 이용한 풀이
+    public static boolean validParentheses(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        
+        //비교 테이블 생성(key에는 닫힌괄호, value에는 열린괄호)
+        //왜? else if 문에서 스택이 비어있으면 return false(닫힌 괄호가 연달아 들어오는 경우)를 처리하므로
+        //key에 열린 괄호를 사용하면 닫힌괄호를 stack에 넣으므로 첫 스택 입력작업이 i=1부터 된다.(즉 시작도 하기 전에 return false가 되버림) 
+        
+        Map<Character, Character> table = new HashMap<>(){{
+            put(')', '(');
+            put('}', '{');
+            put(']', '[');
+        }};
+
+/*
+        Map<Character, Character> table = new HashMap<>();
+        table.put(')', '(');
+        table.put('}', '{');
+        table.put(']', '[');
+   */
+        for(int i = 0; i < s.length(); i++){
+            //테이블 키에 괄호문자가 없다면(즉 열린괄호문자(판별 시작) 이라면)
+            if(!table.containsKey(s.charAt(i))){
+                //스택에 열린 괄호문자를 추가
+                stack.push(s.charAt(i));
+                
+            //닫힌 괄호문자일 경우 스택이 비어있거나(열린괄호문자 없이 닫힌 괄호문자가 왔을 경우)
+            //테이블의 벨류 값과 현재 비교할 열린괄호 문자가 틀리면 fasle를 리턴
+            //stack은 if문에서 pop을 사용해도 스텍에서 값이 빠져나간다. 
+            } else if(stack.isEmpty() || table.get(s.charAt(i)) != stack.pop()){
+                return false;
+            }
+        }
+
+        return stack.size() == 0;
+    }
+} 
