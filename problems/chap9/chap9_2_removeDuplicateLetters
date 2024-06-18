@@ -1,0 +1,106 @@
+package chap9;
+
+import java.util.*;
+
+public class chap9_2_removeDuplicateLetters {
+
+    //중복된 문자를 제외하고 사전식 순서로 나열하라.
+    public static void main(String[] args){
+        
+        String s = "dbacdcbc";
+        
+        System.out.println(removeDuplicateLetters(s));
+        System.out.println(removeDuplicateLetters2(s));
+
+    }
+    
+    //재귀함수로 풀이(이해x)
+    public static Set<Character> toSortedSet(String s){
+        Set<Character> set = new TreeSet<>(new Comparator<Character>() {
+            @Override
+            public int compare(Character o1, Character o2){
+                if(o1 == o2) {
+                    System.out.println("11");
+                    return 0;
+                } else if (o1 > o2) {
+                    System.out.println("22");
+                    return 1;
+                } else {
+                    System.out.println("33");
+                    return -1;
+                }
+            }
+        });
+        for(int i = 0; i < s.length(); i++){
+            set.add(s.charAt(i));
+        }
+        return set;
+    }
+
+    public static String removeDuplicateLetters(String s){
+        /*
+        //확인용
+        Set<Character> set = toSortedSet(s);
+        Iterator<Character> iterSet = set.iterator();
+        while(iterSet.hasNext()) {
+            System.out.print(iterSet.next() +" ");
+        }
+        
+        System.out.println();
+        System.out.println(set.toString());
+         */
+
+        for(char c : toSortedSet(s)){
+            String suffix = s.substring(s.indexOf(c));
+            if(toSortedSet(s).equals(toSortedSet(suffix))){
+                return c + removeDuplicateLetters(suffix.replace(String.valueOf(c), ""));
+            }
+        }
+
+        return "";
+    }
+
+    public static String removeDuplicateLetters2(String s){
+
+        //문자의 개수를 저장하는 카운터
+        Map<Character, Integer> countMap = new HashMap<>();
+
+        //문자 처리 여부를 위한 맵
+        Map<Character, Boolean> seen = new HashMap<>();
+
+        //결과 처리 스택
+        Deque<Character> stack = new ArrayDeque<>();
+
+        //문자의 개수 저장
+        for(char c : s.toCharArray()){
+            countMap.put(c, countMap.get(c) == null ? 1 : countMap.get(c) + 1);
+        }
+
+        for(char c : s.toCharArray()){
+            
+            //현재 처리하는 문자는 카운터에서 -1 처리
+            countMap.put(c, countMap.get(c) - 1);
+
+            //이미 처리한 문자는 건너 뛴다.
+            if(seen.get(c) != null && seen.get(c))
+                continue;
+            //스택이 비어있지 않고 스택의 문자가 현재 문자보다 뒤에 있어야 하고, 카운터에서 아직 처리할 개수가 남아있다면
+            while (!stack.isEmpty() && stack.peek() > c && countMap.get(stack.peek()) > 0)
+                //스택에서 꺼내고 처리여부를 false로 변경
+                seen.put(stack.pop(), false);
+
+            //현재문자를 스택에 추가
+            stack.push(c);
+
+            //처리여부 변수에 처리한것으로 변경
+            seen.put(c, true);
+        }
+
+        //큐에 있는 문자를 순서대로 리턴
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty())
+            sb.append(stack.pollLast());
+        return sb.toString();
+    }
+
+} 
