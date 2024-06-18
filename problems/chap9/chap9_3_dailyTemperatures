@@ -1,0 +1,36 @@
+package chap9;
+
+import java.util.*;
+
+public class chap9_3_dailyTemperatures {
+
+    //매일의 온도 리스트를 입력받아서 더 따듯한 날씨를 위해서는 며칠을 더 기다려야 하는지를 출력하라.
+    public static void main(String[] args){
+        
+        int[] temper = {23, 24, 25, 21, 19, 22, 26, 23};
+        
+        for(int i : dailyTemperatures(temper))
+        System.out.println(i);
+
+    }
+
+    public static int[] dailyTemperatures(int[] temperatures){
+        int[] result = new int[temperatures.length];
+        
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for(int i = 0; i < temperatures.length; i++){
+
+            while(!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]){
+                int val = stack.poll();
+
+                result[val] = i - val;
+            }
+
+            stack.push(i);
+        }
+        
+        return result;
+    }
+
+} 
