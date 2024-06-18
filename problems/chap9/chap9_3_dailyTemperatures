@@ -21,9 +21,11 @@ public class chap9_3_dailyTemperatures {
 
         for(int i = 0; i < temperatures.length; i++){
 
+            //스택이 비어있지 않거나, 기존 온도보다 높은 온도가 나왔을 때
             while(!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]){
                 int val = stack.poll();
 
+                //인덱스를 비교하여 result에 입력
                 result[val] = i - val;
             }
 
